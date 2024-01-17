@@ -1,0 +1,184 @@
+import random
+
+def generateAccountNumber(accounts_list):
+    while True:
+        accountNo = random.randint(1000000000,9999999999)
+        if not any(accountNo == account["accountNo"] for account in accounts_list):
+            return accountNo
+
+def createAccount(accounts_list):
+    accountNo = generateAccountNumber(accounts_list)
+
+
+    while True:
+        name = input("Enter the account holder name: ")
+        if name.strip() == '':
+            print("Name cannot be empty")
+        else:
+            break
+    
+    valid_types = ['C' or 'c', 'S' or 's']
+    while True:
+        account_type = input("Enter the type of account [Current C/Saving S]: ").upper()
+        if account_type not in valid_types:
+            print('Invalid Account Type! Please enter C for Current or S for Saving.')
+        else:
+            break
+    while True:
+        deposit = float(input("Enter The Initial amount (>=500 for Saving and >=1000 for current): "))
+        if (account_type == 'C' and deposit < 1000) or (account_type == 'S' and deposit < 500):
+            print('Invalid initial amount for the account type.')
+        else:
+            break
+
+        
+        
+    
+    while True:
+        aadhar_card = input("Enter Aadhar card number: ")
+        if not aadhar_card.isdigit() or len(aadhar_card) != 12:
+            print('Invalid Aadhar card number! Must be a 12-digit number.')
+        else:
+            break
+
+
+    while True:
+        pan_card = input("Enter PAN card number: ")
+        if len(pan_card) != 10:
+            print('Invalid PAN card number! Must be 10 characters.')
+        else:
+            break
+    
+    account_info = {
+        "accountNo": accountNo,
+        "name": name,
+        "type": account_type,
+        "deposit": deposit,
+        "aadhar_card": aadhar_card,
+        "pan_card": pan_card
+    }
+
+    accounts_list.append(account_info)
+    print("\nYour Account Created successfully ")
+    print(f"Generated Account Number: {accountNo}")  
+    
+
+def displayBalance(accounts_list, num):
+    for account in accounts_list:
+        if account["accountNo"] == num:
+            print("Your Account Balance is =", account["deposit"])
+            return
+    print("No existing record with this number")
+
+
+def displayAll(accounts_list):
+    if not accounts_list:
+        print("No records to display")
+    else:
+        for account in accounts_list:
+            print("Account Number:", account["accountNo"])
+            print("Account Holder Name:", account["name"])
+            print("Type of Account:", account["type"])
+            print("Balance:", account["deposit"])
+            print("Aadhar Card:", account["aadhar_card"])
+            print("PAN Card:", account["pan_card"])
+            print()
+
+def deposit(accounts_list, num):
+    if not accounts_list:  # Check if accounts_list is empty
+        print("No account has been created yet.")
+        return
+
+    for account in accounts_list:
+        if account["accountNo"] == num:
+            amount = float(input("Enter the amount of deposit: "))  # Accept float values
+            account["deposit"] += amount
+            print("Your account is updated")
+            return
+    print("No existing record with this number")
+
+def withdraw(accounts_list, num):
+    for account in accounts_list:
+        if account["accountNo"] == num:
+            amount = float(input("Enter the amount to withdraw: "))  # Accept float values
+            if amount <= account["deposit"]:
+                account["deposit"] -= amount
+                print("Amount withdrawn successfully")
+            else:
+                print("You cannot withdraw a larger amount")
+            return
+    print("No existing record with this number")
+
+def closeAccount(accounts_list, num):
+    accounts_list[:] = [account for account in accounts_list if account["accountNo"] != num]
+    print('\tAccount Closed Successfully!')
+
+def modifyAccount(accounts_list, num):
+    for account in accounts_list:
+        if account["accountNo"] == num:
+            account["name"] = input("Modify Account Holder Name: ")
+            account["deposit"] = int(input("Modify Balance: "))
+            account["aadhar_card"] = input("Modify Aadhar card number: ") 
+            account["pan_card"] = input("Modify PAN card number: ")
+            return
+    print("No existing record with this number")
+
+accounts_list = []
+
+while True:
+    print("\tMAIN MENU")
+    print("\t1. NEW ACCOUNT")
+    print("\t2. DEPOSIT AMOUNT")
+    print("\t3. WITHDRAW AMOUNT")
+    print("\t4. BALANCE ENQUIRY")
+    print("\t5. ALL ACCOUNT HOLDER LIST")
+    print("\t6. CLOSE AN ACCOUNT")
+    print("\t7. MODIFY AN ACCOUNT")
+    print("\t8. EXIT")
+
+    choice = input("Enter your choice: ")
+
+    
+    if choice == '1':
+        createAccount(accounts_list)
+    # Add the rest of your menu choices here...
+    elif choice == '2':
+        if not accounts_list:  # Check if accounts_list is empty before deposit
+            print("No account has been created yet.")
+        else:
+            num = int(input("\tEnter The Account No.: "))
+            deposit(accounts_list, num)
+    elif choice == '3':
+        if not accounts_list:  # Check if accounts_list is empty before deposit
+            print("No account has been created yet.")
+        else:
+            num = int(input("\tEnter The Account No.: "))
+            withdraw(accounts_list, num)
+    elif choice == '4':
+        if not accounts_list:  # Check if accounts_list is empty before deposit
+            print("No account has been created yet.")
+        else:
+            num = int(input("\tEnter The Account No.: "))
+            displayBalance(accounts_list, num)
+    elif choice == '5':
+        if not accounts_list:  # Check if accounts_list is empty before deposit
+            print("No account has been created yet.")
+        else:
+            displayAll(accounts_list)
+    elif choice == '6':
+        if not accounts_list:  # Check if accounts_list is empty before deposit
+            print("No account has been created yet.")
+        else:
+            num = int(input("\tEnter The Account No.: "))
+            closeAccount(accounts_list, num)
+    elif choice == '7':
+        if not accounts_list:  # Check if accounts_list is empty before deposit
+            print("No account has been created yet.")
+        else:
+            num = int(input("\tEnter The Account No.: "))
+            modifyAccount(accounts_list, num)
+    elif choice == '8':
+        print("\tThanks for using our Bank Management System")
+        break
+    else:
+        print("Invalid Choice")
