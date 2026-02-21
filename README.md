@@ -144,7 +144,7 @@ Useful for beginners learning Python and software system design.
 **Keval Jamnapara**
 
 LinkedIn:
-[https://www.linkedin.com/in/keval-jamnapara/](https://www.linkedin.com/in/keval-jamnapara/)
+[https://www.linkedin.com/in/keval-1344/](https://www.linkedin.com/in/keval-1344/)
 
 GitHub:
 [https://github.com/Keval1306](https://github.com/Keval1306)
